@@ -1,50 +1,92 @@
 # Clinical Trial Dashboard
 
-A full‑stack demo application for managing clinical trial participants and visualizing study metrics.  
-Built with **FastAPI**, **React + TypeScript**, **TailwindCSS**, **JWT auth**, and fully containerized with **Docker**.
+A full-stack demo application for managing clinical trial participants and visualizing study metrics.  
+Built with **FastAPI**, **React + TypeScript**, **TailwindCSS**, JWT auth, and fully containerized with Docker.
 
 ---
 
-## 🚀 Features
+## ✨ Features
 
-### **Backend (FastAPI)**
+### Backend (FastAPI)
+
 - JWT authentication (`/auth/token`)
-- CRUD for Participants
-- Aggregated analytics (total, by status, by study group)
+- CRUD for participants
+- Aggregated analytics:
+  - total participants
+  - by status (`active`, `completed`, `withdrawn`, etc.)
+  - by study group (`treatment`, `control`)
 - SQLAlchemy ORM + SQLite
-- Fully tested with Pytest
+- Basic tests with Pytest
 
-### **Frontend (React + Vite + TS)**
-- Login with token-based auth
-- Dashboard with live metrics
+### Frontend (React + Vite + TS)
+
+- Login with token-based auth (stores bearer token, redirects on success)
+- Dashboard with live metrics from the backend
 - Participants table with create / update / delete
-- TailwindCSS UI components
-- Axios API client + React Context auth
-- Vitest + Testing Library tests
+- TailwindCSS UI with reusable utility classes (`card`, `btn`, `input`, etc.)
+- Axios API client + Auth context
+- Vitest + Testing Library tests:
+  - `DashboardPage` renders with mocked metrics
+  - `LoginPage` renders and wires up login form
 
 ---
 
-## 🖥️ Running Locally (without Docker)
+## 🏗 Architecture Overview
 
-### **Backend**
+```mermaid
+flowchart LR
+  subgraph Client
+    Browser[React SPA]
+  end
+
+  subgraph FE["frontend/ (Vite + React + TS)"]
+    Router[React Router]
+    Pages[Pages & Components]
+    APIClient[Axios client]
+  end
+
+  subgraph BE["backend/app (FastAPI)"]
+    Auth[/Auth routes/]
+    Participants[/Participants CRUD/]
+    Metrics[/Metrics endpoint/]
+    DB[(SQLite via SQLAlchemy)]
+  end
+
+  Browser --> Router --> Pages --> APIClient
+  APIClient -->|HTTP/JSON + Bearer token| Auth
+  APIClient --> Participants
+  APIClient --> Metrics
+  Auth --> DB
+  Participants --> DB
+  Metrics --> DB
+```
+
+---
+
+## 🚀 Run Locally (without Docker)
+
+### 1) Backend
 
 ```bash
 cd backend
 python -m venv .venv
+
 # Windows:
 .venv\Scripts\activate
-# macOS/Linux:
-source .venv/bin/activate
+
+# macOS / Linux:
+# source .venv/bin/activate
 
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-Backend runs at:  
-👉 http://localhost:8000  
-Swagger docs: http://localhost:8000/docs
+Backend runs at:
 
-### **Frontend**
+- http://localhost:8000
+- Swagger docs: http://localhost:8000/docs
+
+### 2) Frontend
 
 ```bash
 cd frontend
@@ -52,10 +94,11 @@ npm install
 npm run dev
 ```
 
-Frontend runs at:  
-👉 http://localhost:5173
+Frontend runs at (by default):
 
-**Test credentials:**
+- http://localhost:5173
+
+### Test credentials
 
 ```
 username: admin
@@ -64,28 +107,28 @@ password: admin
 
 ---
 
-## 🐳 Running with Docker
+## 🐳 Run with Docker
 
 ```bash
 docker compose build
 docker compose up
 ```
 
-- Frontend → http://localhost:3000  
+- Frontend → http://localhost:3000
 - Backend → http://localhost:8000
 
 ---
 
-## 🧪 Tests
+## ✅ Tests
 
-### **Backend tests**
+### Backend tests
 
 ```bash
 cd backend
 pytest
 ```
 
-### **Frontend tests**
+### Frontend tests
 
 ```bash
 cd frontend
@@ -94,17 +137,19 @@ npm test
 
 ---
 
-## 📁 Tech Stack
+## 🧱 Tech Stack
 
-### **Backend**
+### Backend
+
 - FastAPI
 - SQLAlchemy
 - SQLite
-- JWT Auth (PyJWT)
+- JWT auth (python-jose + passlib)
 - Pydantic v2
 - Uvicorn
 
-### **Frontend**
+### Frontend
+
 - React 18
 - TypeScript
 - React Router
@@ -112,13 +157,15 @@ npm test
 - Axios
 - Vitest + Testing Library
 
-### **DevOps**
+### DevOps
+
 - Docker
 - docker-compose
+- GitHub Actions (CI)
 
 ---
 
-## 📦 Project Structure
+## 📁 Project Structure
 
 ```
 clinical-trial/
@@ -141,20 +188,29 @@ clinical-trial/
 
 ---
 
-## 📌 Notes for Interviewers
+## 🔄 CI (GitHub Actions)
 
-This project demonstrates:
+This repo includes a sample CI workflow:
 
-- Clean architecture separation  
-- Secure authentication flow  
-- SQLAlchemy ORM usage  
-- React component structure & state management  
-- Tailwind styling  
-- Vitest testing strategy  
-- Dockerized full-stack workflow  
+- Runs backend pytest
+- Runs frontend vitest
+- Validates Docker build
+
+Located in: `.github/workflows/ci.yml`
 
 ---
 
-## 🔗 Repository
+## 🤝 Notes for Interviewers
 
-https://github.com/TemoAvalishvili/clinical-trial
+This project demonstrates:
+
+- Clean separation of concerns (backend vs frontend)
+- Secure JWT-based auth flow
+- SQLAlchemy ORM models & migrations
+- React architecture & global state management
+- Tailwind design system
+- Comprehensive testing setup
+- Dockerized full-stack system
+
+> Some parts of this repo were implemented with the help of an AI pair‑programmer (ChatGPT).  
+> All code and decisions were reviewed and finalized by me Temo Avalishvili.
