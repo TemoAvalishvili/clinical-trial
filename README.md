@@ -1,20 +1,50 @@
 # Clinical Trial Dashboard
 
-## Run locally (no Docker)
+A full‑stack demo application for managing clinical trial participants and visualizing study metrics.  
+Built with **FastAPI**, **React + TypeScript**, **TailwindCSS**, **JWT auth**, and fully containerized with **Docker**.
 
-### Backend
+---
+
+## 🚀 Features
+
+### **Backend (FastAPI)**
+- JWT authentication (`/auth/token`)
+- CRUD for Participants
+- Aggregated analytics (total, by status, by study group)
+- SQLAlchemy ORM + SQLite
+- Fully tested with Pytest
+
+### **Frontend (React + Vite + TS)**
+- Login with token-based auth
+- Dashboard with live metrics
+- Participants table with create / update / delete
+- TailwindCSS UI components
+- Axios API client + React Context auth
+- Vitest + Testing Library tests
+
+---
+
+## 🖥️ Running Locally (without Docker)
+
+### **Backend**
 
 ```bash
 cd backend
 python -m venv .venv
-source .venv/bin/activate  # or .venv\\Scripts\\activate on Windows
+# Windows:
+.venv\Scripts\activate
+# macOS/Linux:
+source .venv/bin/activate
+
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-Backend will be at http://localhost:8000 (docs at /docs).
+Backend runs at:  
+👉 http://localhost:8000  
+Swagger docs: http://localhost:8000/docs
 
-### Frontend
+### **Frontend**
 
 ```bash
 cd frontend
@@ -22,43 +52,109 @@ npm install
 npm run dev
 ```
 
-Frontend will be at the Vite dev URL (usually http://localhost:5173).
+Frontend runs at:  
+👉 http://localhost:5173
 
-Login with:
+**Test credentials:**
 
-- **username**: `admin`
-- **password**: `admin`
+```
+username: admin
+password: admin
+```
 
-## Run with Docker
+---
+
+## 🐳 Running with Docker
 
 ```bash
 docker compose build
 docker compose up
 ```
 
-- Frontend: http://localhost:3000  
-- Backend: http://localhost:8000
+- Frontend → http://localhost:3000  
+- Backend → http://localhost:8000
 
-## Tests
+---
 
-### Backend tests
+## 🧪 Tests
+
+### **Backend tests**
 
 ```bash
 cd backend
 pytest
 ```
 
-### Frontend tests
+### **Frontend tests**
 
 ```bash
 cd frontend
 npm test
 ```
 
-## Stack
+---
 
-- FastAPI, SQLAlchemy, SQLite, JWT auth
-- React, TypeScript, React Router, Axios
-- TailwindCSS for styling
-- Vitest + Testing Library for basic frontend tests
-- Docker & docker-compose for containerization
+## 📁 Tech Stack
+
+### **Backend**
+- FastAPI
+- SQLAlchemy
+- SQLite
+- JWT Auth (PyJWT)
+- Pydantic v2
+- Uvicorn
+
+### **Frontend**
+- React 18
+- TypeScript
+- React Router
+- TailwindCSS
+- Axios
+- Vitest + Testing Library
+
+### **DevOps**
+- Docker
+- docker-compose
+
+---
+
+## 📦 Project Structure
+
+```
+clinical-trial/
+│── backend/
+│   ├── app/
+│   │   ├── main.py
+│   │   ├── models.py
+│   │   ├── auth.py
+│   │   ├── schemas.py
+│   │   ├── database.py
+│   │   └── routes/
+│   └── tests/
+│── frontend/
+│   ├── src/
+│   ├── tests/
+│   └── vite.config.ts
+│── docker-compose.yml
+│── README.md
+```
+
+---
+
+## 📌 Notes for Interviewers
+
+This project demonstrates:
+
+- Clean architecture separation  
+- Secure authentication flow  
+- SQLAlchemy ORM usage  
+- React component structure & state management  
+- Tailwind styling  
+- Vitest testing strategy  
+- Dockerized full-stack workflow  
+
+---
+
+## 🔗 Repository
+
+https://github.com/TemoAvalishvili/clinical-trial
